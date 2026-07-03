@@ -64,6 +64,16 @@ struct ResultView: View {
                     }
                     .padding(.horizontal, Theme.margin)
 
+                    // Warning banner
+                    if !result.warnings.isEmpty {
+                        VStack(spacing: 8) {
+                            ForEach(Array(result.warnings.enumerated()), id: \.offset) { _, warning in
+                                WarningBanner(warning: warning)
+                            }
+                        }
+                        .padding(.horizontal, Theme.margin)
+                    }
+
                     // Column headers
                     HStack {
                         Text("Ingredient")
@@ -142,6 +152,47 @@ struct ResultView: View {
         }
         .navigationTitle("Scaled Recipe")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct WarningBanner: View {
+    let warning: ScalingWarning
+
+    var icon: String {
+        switch warning {
+        case .potTooSmall: return "exclamationmark.triangle.fill"
+        case .scaleTooLarge: return "exclamationmark.triangle.fill"
+        }
+    }
+
+    var message: String {
+        switch warning {
+        case .potTooSmall(let min):
+            return "Pot may be too small for this recipe (minimum ~\(min.formatted(.number.precision(.fractionLength(1)))) qt)"
+        case .scaleTooLarge(let factor):
+            return "Recipe scaled \(factor.formatted(.number.precision(.fractionLength(1))))× — double-check quantities"
+        }
+    }
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(.orange)
+            Text(message)
+                .font(AppFont.caption(13))
+                .foregroundColor(Theme.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer()
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(Color.orange.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: Theme.radiusM))
+        .overlay(
+            RoundedRectangle(cornerRadius: Theme.radiusM)
+                .stroke(Color.orange.opacity(0.3), lineWidth: 1)
+        )
     }
 }
 

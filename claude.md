@@ -78,4 +78,9 @@ layout, animations, and navigation flow.
 - Manual Entry: form fields for name, ingredients (repeatable rows: name,
   qty, unit), instructions (multi-line text)
 - Scan Recipe: camera button + placeholder text explaining what happens
-  ("We'll scan and extract your recipe a
+
+## Current phase (UPDATED)
+UI phase is complete. Now building the SCALING LOGIC layer only.
+Do not touch any View files unless a ViewModel needs a new @Published
+property to bind to. No APIs, no ARKit, no persistence yet — logic must
+be pure, testable, and independent of the UI.

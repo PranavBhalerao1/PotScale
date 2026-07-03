@@ -74,13 +74,11 @@ struct ScaledResult {
     let recipe: Recipe
     let detectedQuarts: Double
 
-    var scaleFactor: Double { detectedQuarts / recipe.suggestedPotQuarts }
-
-    var scaledIngredients: [(original: Ingredient, scaled: Ingredient)] {
-        recipe.ingredients.map { ing in
-            let scaledQty = ing.quantity * scaleFactor
-            let scaledIng = Ingredient(id: ing.id, name: ing.name, quantity: scaledQty, unit: ing.unit)
-            return (original: ing, scaled: scaledIng)
-        }
+    private var engineResult: ScalingEngineResult {
+        ScalingEngine.scale(recipe: recipe, detectedQuarts: detectedQuarts)
     }
+
+    var scaleFactor: Double { engineResult.factor }
+    var scaledIngredients: [(original: Ingredient, scaled: Ingredient)] { engineResult.scaledIngredients }
+    var warnings: [ScalingWarning] { engineResult.warnings }
 }
