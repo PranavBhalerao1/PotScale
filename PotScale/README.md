@@ -1,58 +1,52 @@
-# PotScale — How to Open in Xcode
+## Step 1 — Create the Xcode project (in a temporary location)
 
-## Step 1 — Create the Xcode project
-
-1. Open Xcode → **File → New → Project**
-2. Choose **iOS → App**, click **Next**
+1. Open Xcode → File → New → Project
+2. Choose iOS → App, click Next
 3. Fill in:
-   - **Product Name**: `PotScale`
-   - **Interface**: SwiftUI
-   - **Language**: Swift
-   - **Minimum Deployments**: iOS 17.0
-4. Save the project **in this folder** (so `PotScale.xcodeproj` sits next to this `README.md`)
-5. Xcode creates a default `ContentView.swift` and `PotScaleApp.swift` — **delete both** (move to Trash).
+   - Product Name: PotScale
+   - Interface: SwiftUI
+   - Language: Swift
+   - Minimum Deployments: iOS 17.0
+4. IMPORTANT: Save this new project to your Desktop or a temp folder —
+   NOT inside your existing PotScale repo folder. This avoids folder
+   name collisions with your existing PotScale/PotScale/ structure.
+5. Xcode creates PotScaleTemp/PotScaleTemp.xcodeproj plus default
+   ContentView.swift and PotScaleTempApp.swift inside a
+   PotScaleTemp/PotScaleTemp/ folder.
 
-## Step 2 — Add the source files
+## Step 2 — Move the .xcodeproj into your real repo
 
-1. In the Xcode Project Navigator, right-click the **PotScale** group → **Add Files to "PotScale"…**
-2. Navigate to this `PotScale/` folder and select these subfolders:
-   - `DesignSystem/`
-   - `Models/`
-   - `Mock/`
-   - `Services/`
-   - `ViewModels/`
-   - `Views/`
-3. Also add `PotScaleApp.swift` from the root of `PotScale/`.
-4. Make sure **"Copy items if needed"** is **unchecked** (files are already in place) and **"Add to target: PotScale"** is checked.
+1. Close Xcode.
+2. Drag/move just the .xcodeproj file (e.g. PotScaleTemp.xcodeproj) into
+   your repo root — the same level as claude.md and design.md, NOT inside
+   the PotScale/ source folder.
+3. Rename it to PotScale.xcodeproj.
+4. Delete the leftover PotScaleTemp folder entirely — you don't need its
+   default ContentView.swift or generated app file, since your repo
+   already has a real PotScaleApp.swift.
 
-## Step 3 — Add the unit test target
+## Step 3 — Open and wire up the project
 
-1. **File → New → Target…** → choose **Unit Testing Bundle**, click **Next**
-2. Product Name: `PotScaleTests`, make sure it is linked to the `PotScale` project
-3. Xcode creates a default `PotScaleTests.swift` — delete it
-4. In the Project Navigator, right-click the **PotScaleTests** group → **Add Files to "PotScaleTests"…**
-5. Navigate to the `PotScaleTests/` folder at the repo root and select `ScalingEngineTests.swift`
-6. Press **⌘U** to run tests — all tests should pass
+1. Double-click PotScale.xcodeproj to open it in Xcode.
+2. It will show as basically empty (just referencing files that don't
+   exist at the paths it expects yet).
+3. Right-click the project in the Navigator → Add Files to "PotScale"...
+4. Select your existing PotScale/ folder (the one containing
+   DesignSystem/, Models/, Mock/, Services/, ViewModels/, Views/,
+   PotScaleApp.swift).
+5. Make sure "Copy items if needed" is UNCHECKED and "Create groups"
+   is selected (not folder references), "Add to target: PotScale" checked.
 
-## Step 4 — Build & run
+## Step 4 — Add the unit test target
 
-- Press **⌘R** to run in the Simulator (iPhone 15 recommended).
-- Or open individual files and use **⌘⌥P** to preview each screen in Xcode Previews.
+1. File → New → Target… → Unit Testing Bundle
+2. Product Name: PotScaleTests, linked to the PotScale project
+3. Delete Xcode's default generated test file
+4. Right-click PotScaleTests group → Add Files to "PotScaleTests"…
+5. Select your existing PotScaleTests/ScalingEngineTests.swift
+6. Press ⌘U to run tests — all should pass
 
-## Navigation map
+## Step 5 — Build & run
 
-```
-Home
-├── Choose a Recipe → Recipe Picker → Recipe Detail → Scan Pot → Result
-├── My Recipes (empty state / populated toggle in toolbar)
-│   └── + FAB → Add Recipe (Manual Entry / Scan tab)
-└── Recent Scans → My Recipes
-```
-
-## Mock data notes
-
-- 6 recipes across Breakfast, Dinner, Soup, Baking, Salads
-- Scan screen fakes a 2-second scan and detects **3.2 qt**
-- Result screen scales via `ScalingEngine` — real ratio math, with unit normalization (tsp→tbsp, oz→lbs, etc.) and warnings for pots < 0.5 qt or scale factor > 5×
-- "Save to My Recipes" is UI-only — toggles a confirmation state, no persistence
-- My Recipes has a toolbar toggle to preview both empty state and populated list
+- Press ⌘R to run in the Simulator (iPhone 15 recommended)
+- Or use ⌘⌥P for Xcode Previews on individual screens
